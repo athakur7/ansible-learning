@@ -1,9 +1,9 @@
 - hosts: all
   tasks:
-  - package: "name= httpd state = present"
+  - package: "name=httpd state=present"
   - copy: "src=/web.html dest=/var/www/html"
   - service: "name=httpd state=started enabled=yes"
-  - firewalld: "immediate=yes port=80/tcp state=enabled permanent=yes "
+  - firewalld: "immediate=yes port=80/tcp state=enabled permanent=yes"
 
 # Installing collections with ansible-galaxy cmd below:
 # ansible-galaxy collection install ansible.posix
