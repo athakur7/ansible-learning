@@ -50,11 +50,17 @@ Before setting up Ansible, ensure you have the following prerequisites:
      sudo apt-get install ansible
      ```
 
-   - On CentOS or Red Hat:
+   - On CentOS or Red Hat upto rhel8 :
 
      ```shell
      sudo yum install epel-release
      sudo yum install ansible
+     ```
+  
+  - On  Red Hat 9 :
+
+     ```shell
+     sudo yum install ansible-core
      ```
 
    - If you prefer to use Python's package manager, you can install Ansible via `pip`:

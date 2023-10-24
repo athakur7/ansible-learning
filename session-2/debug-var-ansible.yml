@@ -1,0 +1,39 @@
+- hosts: 192.168.1.48
+# Create Variable example
+  vars:
+    # static variable value
+    x: 5
+    y: 10
+
+    # variable containing list
+    a:
+    - 10
+    - 20
+    - 30
+  vars_prompt:
+    - name: z
+      # by default yes do not show value in terminal while prompting
+      private: no
+      prompt: "Enter value"
+  
+  
+  tasks:
+  # Debug message print example
+  - debug:
+          msg: "Printing some message"
+
+  - debug:
+        # Printing variable x
+          var: x
+
+  - debug:
+        # Printing variable z
+          var: z
+  - debug:
+        # Printing variable a
+          var: a
+  - debug:
+        # Printing variable a at index 1
+          var: a[1]
+  - debug:
+          msg: "Printing value from Y var: {{ y }} "

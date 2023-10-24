@@ -1,0 +1,31 @@
+# V2
+- hosts: all
+  vars:
+    web_server: "httpd"
+
+  tasks:
+  - name: "Installing web-server"
+    package: 
+      name: "{{ web_server }}"
+      state: present
+    register: y
+  - debug:
+      var: y
+
+  - name: "Copying web.html"
+    copy: 
+      src: "/web.html"
+      dest: "/var/www/html"
+
+  - name: "Start web-server"
+    service: 
+      name: "httpd"
+      state: started
+      enabled: yes
+
+  - name: "Setup firewall port"
+    firewalld:
+      immediate: yes
+      port: "80/tcp" 
+      state: enabled
+      permanent: yes

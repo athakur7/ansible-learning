@@ -1,0 +1,3 @@
+- hosts: 192.168.1.48
+  tasks:
+  - command: "date"
