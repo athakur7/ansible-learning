@@ -1,0 +1,33 @@
+# V4 "Installing bunch of softwares"
+- hosts: all
+  vars:
+    softwares:
+    - "httpd"
+    - "php"
+    - "firefox"
+  tasks:
+  - name: "Installing softwares"
+    package: 
+      name: "{{ softwares }}"
+      state: present
+    register: y
+  - debug:
+      var: y
+
+  - name: "Copying web.html"
+    copy: 
+      src: "/web.html"
+      dest: "/var/www/html"
+
+  - name: "Start web-server"
+    service: 
+      name: "httpd"
+      state: started
+      enabled: yes
+
+  - name: "Setup firewall enable port on httpd"
+    firewalld:
+      immediate: yes
+      port: "80/tcp" 
+      state: enabled
+      permanent: yes

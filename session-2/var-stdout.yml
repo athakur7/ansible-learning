@@ -1,0 +1,7 @@
+- hosts: 192.168.1.48
+  tasks:
+  - command: "date"
+    register: x
+
+  - debug:
+        var: x.stdout
