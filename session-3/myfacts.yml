@@ -1,0 +1,10 @@
+- hosts: control_node
+  tasks:
+  - debug:
+          var: ansible_memfree_mb 
+  - debug:
+          msg: "this is my os name : {{  ansible_os_family }} "
+  - debug:
+          var: ansible_default_ipv4.address
+  - debug:
+          var: ansible_devices.sda.partitions.sda2.holders[1]
