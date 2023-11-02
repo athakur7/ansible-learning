@@ -1,0 +1,30 @@
+# V2
+
+# https://docs.ansible.com/ansible/latest/collections/ansible/builtin/yum_repository_module.html
+
+- hosts: aws_control_node
+  tasks:
+  - name: Download docker.repo to configure yum for docker
+    # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/get_url_module.html
+    ansible.builtin.get_url:
+      url: "https://download.docker.com/linux/centos/docker-ce.repo"
+      dest: /etc/yum.repos.d/
+
+  - name: Install docker-ce software
+    ansible.builtin.package:
+      name: "docker-ce"
+      state: present
+
+  - name: Start docker-ce
+    ansible.builtin.service:
+      name: "docker"
+      state: started
+
+    # https://docs.ansible.com/ansible/latest/collections/community/docker/docker_image_module.html
+  - name: pull docker image ubuntu
+    docker_image:
+      name: ubuntu
+      tag: latest
+      source: pull
+
+      

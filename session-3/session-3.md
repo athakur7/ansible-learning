@@ -59,11 +59,16 @@ root    ALL=(ALL)       ALL
 devops  ALL=(ALL)       ALL
 ```
 
-
+## This command will gather facts from the host at IP address 192.168.1.48 and filter the results based on the ansible_user variable, displaying information related to the user configuration on the remote host.
 ```shell
 ansible 192.168.1.48 -m setup -a "filter=ansible_user*"
 ```
-- Creating groupname **[control_node]** in host group
+- `-m setup`: Specifies the Ansible module to use, which is `setup` for gathering system facts.
+- `-a "filter=ansible_user*"`: This option allows you to filter the facts based on the `ansible_user` variable. You can replace `ansible_user*` with any specific filter criteria you want.
+
+
+
+## Creating groupname **[control_node]** in host group
 ```shell
 vim /etc/ansible/hosts 
 ```
