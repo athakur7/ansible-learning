@@ -19,12 +19,32 @@
     ansible.builtin.service:
       name: "docker"
       state: started
+  
+  - name: Install pip3 software
+    ansible.builtin.package:
+      name: "python3-pip"
+      state: present
+  
+  - name: install python package
+    pip:
+      name: "docker-py"
 
     # https://docs.ansible.com/ansible/latest/collections/community/docker/docker_image_module.html
-  - name: pull docker image ubuntu
+  # - name: pull docker image ubuntu
+  #   docker_image:
+  #     name: ubuntu
+  #     tag: latest
+  #     source: pull
+
+  - name: pull docker image named ubuntu
     docker_image:
-      name: ubuntu
-      tag: latest
+      name: "ubuntu"
+      tag: "14.04"
       source: pull
 
-      
+  - name: Container my_ubuntu_container
+    docker_container:
+      name: my_ubuntu_container
+      state: present
+      image: ubuntu:14.04
+      command: sleep infinity
