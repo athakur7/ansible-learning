@@ -1,0 +1,25 @@
+- hosts: aws_control_node
+  # Specifying variable file 
+  vars_files:
+  - vars.yml
+  tasks:
+    - name: install web package
+      package:
+        name: " {{ web_package }} " 
+        state: present
+    - debug:
+            var : webpage
+
+    - name: Deploy web package
+      template:
+        src: "{{ webpage }}"
+        dest: "{{ web_doc_root }}/index.html"
+    
+    - name: Start web-server
+      service:
+        name: "{{ web_package }}"
+        state: started
+
+        
+    
+    
