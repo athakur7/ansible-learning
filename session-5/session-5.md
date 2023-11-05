@@ -91,3 +91,66 @@ This template generates a list of users in the SSH configuration file.
 - [Jinja2 Documentation](https://jinja.palletsprojects.com/en/3.0.x/templates/)
 
 This documentation provides an introduction to Ansible templates and Jinja2, along with real-life examples. Experiment with templates and the Jinja2 language to create dynamic and adaptable configurations in your Ansible playbooks.
+
+## Check SeLinux Status
+```shell
+sudo getenforce
+```
+
+## Disable SeLinux
+```shell
+sudo setenforce 0
+```
+
+## The `sudo netstat -tnlp` command is used to display a list of active network connections and associated listening processes on a Linux system. Here's what each part of the command does:
+
+- `netstat`: This is the command-line tool for displaying network-related information, including network connections and statistics.
+
+- `-tnlp`: These are various options and filters for the `netstat` command:
+  - `-t`: Display TCP connections.
+  - `-n`: Show numerical addresses instead of resolving hostnames.
+  - `-l`: Show only listening sockets (those waiting for incoming connections).
+  - `-p`: Show the process ID and name of the program associated with each socket.
+
+When you run `sudo netstat -tnlp`, you'll see a list of all active listening sockets on your system, along with the associated processes, their process IDs, and the port numbers they are listening on. This information is valuable for monitoring network activity and troubleshooting network-related issues.
+
+## Ansible Handlers
+- Sometimes you want a task to run only when a change is made on a machine. For example, you may want to restart a service if a task updates the configuration of that service, but not if the configuration is unchanged. Ansible uses handlers to address this use case. Handlers are tasks that only run when notified.
+- [Ansible Handlers](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html)
+
+### Ansible Handler Example :
+```yml
+- hosts: aws_control_node,local_control_node
+  # Specifying variable file 
+  vars_files:
+  - vars.yml
+  tasks:
+    - name: install web package
+      package:
+        name: " {{ web_package }} " 
+        state: present
+    - debug:
+            var : webpage
+
+    - name: conf changes in my apache web web-server
+      template:
+        dest: "/etc/httpd/conf.d/anand.conf"
+        src: "web.conf.j2"
+      notify: "restart web-server"
+
+    - name: Deploy web package
+      template:
+        src: "{{ webpage }}"
+        dest: "{{ web_doc_root }}/index.html"
+    
+    - name: Start web-server
+      service:
+        name: "{{ web_package }}"
+        state: started
+  # https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html
+  handlers:
+    - name: restart web-server
+      service:
+        name: "{{ web_package }}"
+        state: restarted
+```
