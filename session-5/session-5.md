@@ -231,3 +231,86 @@ You can skip a task based on a combination of conditions using logical operators
 By using the `when` statement and specifying the appropriate condition, you have fine-grained control over which tasks are executed and which are skipped in your Ansible playbooks.
 
 These examples demonstrate how to skip tasks based on various conditions using the `when` statement in Ansible. You can customize these conditions to suit your specific requirements and orchestrate your playbooks more effectively.
+
+Certainly! Here's a Markdown file that explains the usage of `echo $?` to display the exit status of the last executed command in a Unix-like shell:
+
+# Understanding Exit Status with `echo $?`
+
+In a Unix-like shell, the exit status of a command provides information about whether the command executed successfully or encountered an error. The exit status is a numeric value that can be accessed using the `echo $?` command immediately after executing another command. Here's how it works:
+
+## Exit Status Values
+
+- **0**: A command with an exit status of 0 indicates that the command executed successfully without any errors. This is the desired outcome for most commands.
+
+- **Non-zero Value (usually 1 or higher)**: An exit status with a non-zero value usually indicates that the command encountered an error or failed to execute as expected. The specific non-zero value may vary depending on the command and the nature of the error.
+
+## Usage of `echo $?`
+
+To access the exit status of the last executed command, you can use the following command immediately after the command of interest:
+
+```bash
+echo $?
+```
+
+- `echo`: This is the command used to display the exit status value.
+- `$?`: This is a special variable that holds the exit status of the previous command. It is automatically set by the shell.
+
+## Example
+
+Let's illustrate the usage of `echo $?` with a simple example. Suppose you want to check if a file exists using the `ls` command:
+
+```bash
+ls some_file.txt
+echo $?
+```
+
+- If `some_file.txt` exists, the `ls` command will have an exit status of 0, and `echo $?` will display `0`.
+
+- If `some_file.txt` does not exist, the `ls` command will have a non-zero exit status (typically 1), and `echo $?` will display the non-zero value.
+
+## Use Cases
+
+Understanding the exit status of commands is valuable for scripting and automation. You can use it to:
+
+- Conditionally execute other commands based on the success or failure of a previous command.
+- Handle errors or exceptions in scripts.
+- Perform error checking and reporting in automated processes.
+
+By using `echo $?`, you can gain insight into the outcome of command execution and take appropriate actions based on the exit status.
+
+# [Error handling in playbooks](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_error_handling.html)
+
+When Ansible receives a non-zero return code from a command or a failure from a module, by default it stops executing on that host and continues on other hosts. However, in some circumstances, you may want different behavior. Sometimes a non-zero return code indicates success. Sometimes you want a failure on one host to stop execution on all hosts. Ansible provides tools and settings to handle these situations and help you get the behavior, output, and reporting you want.
+
+## Ignoring failed commands
+By default, Ansible stops executing tasks on a host when a task fails on that host. You can use ignore_errors to continue despite of the failure.
+
+```yaml
+- name: Do not count this as a failure
+  ansible.builtin.command: /bin/false
+  ignore_errors: true
+```
+The `ignore_errors` directive only works when the task can run and returns a value of ‘failed’. It does not make Ansible ignore undefined variable errors, connection failures, execution issues (for example, missing packages), or syntax errors.
+
+# [Ansible jinja filters ](https://linux-system-roles.github.io/documentation/howto/working-with-ansible-jinja-code-and-filters)
+
+# `ANSIBLE_STDOUT_CALLBACK`
+- `ANSIBLE_STDOUT_CALLBACK` environment variable is used to specify the callback plugin that should be used to format and display the output of Ansible playbooks or ad-hoc commands. Callback plugins control how Ansible displays information, such as task execution results, on the command line or in log files.
+
+In your command:
+
+```bash
+ANSIBLE_STDOUT_CALLBACK=debug ansible-playbook -vv webserver-v3.yml
+```
+
+- `ANSIBLE_STDOUT_CALLBACK=debug` sets the `ANSIBLE_STDOUT_CALLBACK` environment variable to "debug." This means that the "debug" callback plugin will be used to format and display the output.
+
+- `ansible-playbook` is the Ansible command for running playbooks.
+
+- `-vv` is used to enable verbose output, providing more detailed information about playbook execution. It increases the verbosity level, making Ansible print more debug information.
+
+- `webserver-v3.yml` is the name of the Ansible playbook (in this case, "webserver-v3.yml") that you want to execute.
+
+By setting `ANSIBLE_STDOUT_CALLBACK` to "debug," you instruct Ansible to use the "debug" callback plugin to format and display the playbook's output. The "debug" callback plugin is useful for debugging and provides detailed information about task execution, variables, and other aspects of the playbook run.
+
+This can be helpful when you want to inspect the internal details of how Ansible is processing and executing tasks within the playbook. The `-vv` flag further enhances the verbosity of the output, making it useful for troubleshooting and understanding the playbook's behavior.

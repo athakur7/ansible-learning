@@ -1,0 +1,38 @@
+Ansible Jinja playbooks_filters
+https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_filters.html
+
+Testing !!  {% if hello is undefined %}
+hello var is not defined
+{% endif %}
+
+List example
+{{ [1,2,3,4,5] }}
+
+for loop example
+{% for i in [1,2,3,4,5] %}
+    {{ i }}
+{% endfor %}
+
+for loop ip example
+{% for i in [1,2,3,4,5] %}
+192.168.1.{{ i }}
+{% endfor %}
+
+for loop ex2
+{% for i in ["tom","jack"] %}
+{{ i }}@gmail.com
+{% endfor %}
+
+checking max from List
+more function: min,unique,difference
+
+{{ [123,53636,334,245] | max}}
+
+urlsplit
+{{ "http://my.ansible.com/latest/data/test.html" | urlsplit}}
+
+urlsplit hostname
+{{ "http://my.ansible.com/latest/data/test.html" | urlsplit('hostname')}}
+
+https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_filters.html
+bye bye..

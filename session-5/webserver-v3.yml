@@ -1,0 +1,18 @@
+- hosts: aws_control_node,local_control_node
+  # Specifying variable file 
+  vars_files:
+  - vars-v3.yml
+  tasks:
+    - name: Deploy web package
+      template:
+        src: "{{ webpage }}"
+        dest: "{{ web_doc_root }}/index.html"
+
+    - name: test web connectivity
+      uri:
+        # url: "http://127.0.0.1:2121/index.html"
+        url: "http://localhost:2121/index.html"
+      register: var_web_url
+    - debug:
+        msg: "testing successful: connected {{ var_web_url }}"
+      when: var_web_url.status == 200
