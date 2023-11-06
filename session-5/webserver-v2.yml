@@ -1,0 +1,43 @@
+- hosts: aws_control_node,local_control_node
+  # Specifying variable file 
+  vars_files:
+  - vars.yml
+  vars:
+  - z: 5
+  tasks:
+    - name: shell cmd
+      ansible.builtin.command: "mkdir /tmp/temp_folder"
+      ignore_errors: true
+    - name: install web package
+      package:
+        name: "{{ web_package }}" 
+        state: present
+      when: ansible_os_family == "RedHat" and ansible_memory_mb.real.free >= 10
+      register: install_output
+    - debug:
+        var : install_output.rc
+
+    - name: conf changes in my apache web web-server
+      template: 
+        dest: "/etc/httpd/conf.d/anand.conf"
+        src: "web.conf.j2"
+      notify: "restart web-server"
+      when: install_output.rc == 0
+
+    - name: Deploy web package
+      template:
+        src: "{{ webpage }}"
+        dest: "{{ web_doc_root }}/index.html"
+    
+    - name: Start web-server
+      service:
+        name: "{{ web_package }}"
+        state: started
+      when: install_output.rc == 0
+  # https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_handlers.html
+  handlers:
+    - name: restart web-server
+      service:
+        name: "{{ web_package }}"
+        state: restarted
+      when: install_output.rc == 0

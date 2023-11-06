@@ -1,1 +1,13 @@
 Hello from {{ author_name }} !!!
+
+{% if ansible_os_family == "RedHat" %}
+
+    I am working on RedHat System
+
+{% endif %}
+
+{% if ansible_os_family == "Ubuntu" %}
+
+    I am working on Ubuntu System
+
+{% endif %}
