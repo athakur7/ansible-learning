@@ -154,3 +154,80 @@ When you run `sudo netstat -tnlp`, you'll see a list of all active listening soc
         name: "{{ web_package }}"
         state: restarted
 ```
+Certainly! Here's a Markdown file that explains how to skip tasks in Ansible playbooks using the `when` statement:
+
+
+# Skipping Tasks in Ansible Playbooks
+## https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_conditionals.html
+
+In Ansible, you can control the execution of tasks within your playbook by using the `when` statement. This allows you to skip tasks based on specific conditions. This guide will show you how to skip tasks using the `when` statement in Ansible playbooks.
+
+## Basic Syntax
+
+The `when` statement is used to conditionally execute a task. When the specified condition is met, the task will run; otherwise, it will be skipped. The basic syntax for the `when` statement is as follows:
+
+```yaml
+- name: Name of the task
+  module_name: Module-specific options
+  when: Condition
+```
+
+- `name`: A descriptive name for the task.
+- `module_name`: The module that performs the task (e.g., `command`, `shell`, `apt`, `yum`, etc.).
+- `Condition`: The condition that determines whether the task should run or be skipped.
+
+## Examples
+
+### Skip Task If a Variable Is Not Defined
+
+You can skip a task if a variable is not defined. Here's an example:
+
+```yaml
+- name: Task will be skipped if my_variable is not defined
+  command: some_command
+  when: my_variable is defined
+```
+
+### Skip Task If a Variable Has a Specific Value
+
+You can skip a task if a variable has a specific value. For example:
+
+```yaml
+- name: Task will be skipped if my_variable is not "some_value"
+  command: some_command
+  when: my_variable != "some_value"
+```
+
+### Skip Task If a File or Directory Exists
+
+You can skip a task if a file or directory exists on the target host. Here's an example:
+
+```yaml
+- name: Task will be skipped if a file or directory exists
+  command: some_command
+  when: not (ansible_facts['file_exists_var'].stat.exists)
+```
+
+### Skip Task If a Previous Task Failed
+
+You can skip a task if a previous task has failed by checking whether the `ansible_failed_task` variable is defined:
+
+```yaml
+- name: Task will be skipped if a previous task failed
+  command: some_command
+  when: ansible_failed_task is not defined
+```
+
+### Skip Task Based on Multiple Conditions
+
+You can skip a task based on a combination of conditions using logical operators. For example:
+
+```yaml
+- name: Task will be skipped based on multiple conditions
+  command: some_command
+  when: (condition1 or condition2) and not condition3
+```
+
+By using the `when` statement and specifying the appropriate condition, you have fine-grained control over which tasks are executed and which are skipped in your Ansible playbooks.
+
+These examples demonstrate how to skip tasks based on various conditions using the `when` statement in Ansible. You can customize these conditions to suit your specific requirements and orchestrate your playbooks more effectively.

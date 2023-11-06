@@ -5,13 +5,16 @@
   tasks:
     - name: install web package
       package:
-        name: " {{ web_package }} " 
+        name: "{{ web_package }}" 
         state: present
+      # Skip task when false
+      # when: false
+      # when: z == 6
     - debug:
             var : webpage
 
     - name: conf changes in my apache web web-server
-      template:
+      template: 
         dest: "/etc/httpd/conf.d/anand.conf"
         src: "web.conf.j2"
       notify: "restart web-server"
