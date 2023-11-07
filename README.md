@@ -7,6 +7,7 @@
 - [Session 3 - Ansible configuration file & Ansible Facts](session-3/session-3.md)
 - [Session 4 - Installing & Configuring of Docker with Ansible](session-4/session-4.md)
 - [Session 5 - Template & Jinja2](session-5/session-5.md)
+- [Session 6 - Setting up load balancer & Ansible Roles](session-6/session-6.md)
 <!-- - [Week 1 Journal](journal/week1.md)
 - [Week 2 Journal](journal/week2.md) -->
 
