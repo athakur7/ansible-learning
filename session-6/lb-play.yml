@@ -1,0 +1,29 @@
+- name: setup loadbalancer using nginx
+  hosts: lb
+  tasks:
+  - name: install nginx software
+    ansible.builtin.package:
+      name: "nginx"
+      state: present
+    register: lb_var
+  
+  - name: configure loadbalancer backend system
+    template:
+      src: "lb-conf.j2"
+      dest: "/etc/nginx/conf.d/lb.conf"
+    notify: 
+    - "restart nginx"
+  
+  - name: start nginx
+    ansible.builtin.service:
+      name: "nginx"
+      state: started
+
+  handlers:
+  - name: restart nginx
+    ansible.builtin.service:
+      name: "nginx"
+      state: started
+
+  - ansible.builtin.debug:
+      var: lb_var
